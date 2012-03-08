@@ -1,5 +1,10 @@
 import random
 
+# TODO: Move points between clusters if needed instead of removing all and re-adding to the correct cluster
+#       Detect if no changes occur between rounds and return instead of doing numIter rounds
+#       Functionalize the code a bit
+#       Use clusterID for each point instead of lists of points in each cluster (not sure but I know there is a better way to implement)
+
 debug = False
 
 class Point:
@@ -83,10 +88,12 @@ def kmeans(listOfPoints, k, numIter):
         prtClusters(clusters)
         
     # Now we run the main loop of the algorithm
-    for i in range(numIter):
+        for i in range(numIter):
         points = [] # list of all points in all clusters
         for c in clusters:
             c.updateCenter() # recalculate centroid of each cluster
+
+            # This should just move points instead of deleting all and re-adding
             points.extend(c.getRemovePoints()) # remove all points
         for p in points:
             addToClosest(clusters, p)
