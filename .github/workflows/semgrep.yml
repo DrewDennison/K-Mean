@@ -1,12 +1,21 @@
+on:
+  pull_request: {}
+  push:
+    branches:
+    - main
+    - master
 name: Semgrep
-on: [pull_request, push]
 jobs:
   semgrep:
-    name: semgrep with managed policy
+    name: Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - uses: returntocorp/semgrep-action@v1
-        with:
-          publishToken: ${{ secrets.SEMGREP_TOKEN }}
-          publishDeployment: "5"
+    - uses: actions/checkout@v2
+    - uses: returntocorp/semgrep-action@v1
+      with:
+        auditOn: push
+        publishUrl: http://localhost:3000
+        publishToken: ${{ secrets.SEMGREP_TOKEN }}
+        publishDeployment: 289
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
